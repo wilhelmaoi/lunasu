@@ -1,3 +1,4 @@
+// app/onboarding
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
@@ -50,7 +51,7 @@ export default function Onboarding() {
 
   const complete = useCallback(async () => {
     await AsyncStorage.setItem("onboardingComplete", "true");
-    router.replace('./(main)');
+    router.replace('./(tabs)/divination');
   }, [router]);
 
   const renderItem = useCallback(({ item }: { item: Card }) => {
@@ -123,7 +124,7 @@ export default function Onboarding() {
           </Pressable>
         ) : (
           <Pressable onPress={complete} hitSlop={10}>
-            <Text style={{ color: "#4a56e2", fontWeight: "600" }}>开始使用</Text>
+            <Text style={{ color: "#4a56e2", fontWeight: "600" }}>开始</Text>
           </Pressable>
         )}
       </View>

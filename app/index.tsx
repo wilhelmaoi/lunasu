@@ -1,3 +1,4 @@
+// app/index
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ export default function Index() {
       try {
         const value = await AsyncStorage.getItem("onboardingComplete");
         if (value === "true") {
-          router.navigate('./(main)');
+          router.navigate('./(tabs)/divination');
         } else {
           router.navigate('./onboarding');
         }
