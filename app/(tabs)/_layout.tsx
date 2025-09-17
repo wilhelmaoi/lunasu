@@ -1,6 +1,6 @@
 // app/(tabs)/_layout.tsx
 import { useTheme } from '@/src/theme/ThemeContext';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from "expo-router";
 import React from "react";
 
@@ -27,10 +27,30 @@ export default function TabLayout() {
         tabBarPosition: "bottom",
       }}
     >
-      <Tabs.Screen name="divination" options={{ title: "占卜", tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />, headerShown: false }} />
-      <Tabs.Screen name="stellar" options={{ title: "星座" ,tabBarIcon: ({ color }) => <AntDesign name="user" size={28}  color={color}  />, headerShown: false}} />
-      <Tabs.Screen name="fortune" options={{ title: "运势", tabBarIcon: ({ color }) => <AntDesign name="home" size={28} color={color} />, headerShown: false }} />
-      <Tabs.Screen name="mine" options={{ title: "我的" ,tabBarIcon: ({ color }) => <AntDesign name="user" size={28}  color={color}  />, headerShown: false}} />
+      {/* 
+        星星：<MaterialCommunityIcons name="star-four-points" size={28} color={color} />
+              <MaterialCommunityIcons name="orbit" size={28}  color={color}  />
+
+        水晶球：<MaterialCommunityIcons name="crystal-ball" size={28} color={color} />
+      */}
+      <Tabs.Screen name="fortune" options={{ 
+        title: "运势", 
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="crystal-ball" size={28} color={color} />, 
+        headerShown: false 
+      }} />
+      <Tabs.Screen name="stellar" options={{ 
+        title: "星座" ,
+        tabBarIcon: ({ color }) => <MaterialCommunityIcons name="weather-night" size={28}  color={color}  />, 
+        headerShown: false
+        }} />
+      <Tabs.Screen name="divination" options={{ 
+        title: "占卜", tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cards-playing" size={28} color={color} />, 
+        headerShown: false 
+        }} />
+      <Tabs.Screen name="mine" options={{ 
+        title: "我的" ,tabBarIcon: ({ color }) => <MaterialCommunityIcons name="star-four-points" size={28}  color={color}  />, 
+        headerShown: false
+        }} />
     </Tabs>
   )
 }
