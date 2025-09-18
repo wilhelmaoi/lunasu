@@ -1,4 +1,4 @@
-// app/(tabs)/home/_layout.tsx
+// app/(tabs)/_layout.tsx
 import CustomTopTabBar from "@/src/components/CustomTopTabBar";
 import { useTheme } from "@/src/theme/ThemeContext";
 import { Tabs } from "expo-router";

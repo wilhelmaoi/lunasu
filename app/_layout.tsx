@@ -2,7 +2,7 @@
 import CustomDrawerContent from "@/src/components/CustomDrawerContent";
 import { useThemeStore } from "@/src/context/store";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
-import { Stack, usePathname } from "expo-router";
+import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
@@ -48,15 +48,18 @@ export default function RootLayout() {
                 drawerStatusBarAnimation: "slide",
               }}
             >
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Drawer.Screen name="index" options={{ headerShown: false }} />
+          <Drawer.Screen name="onboarding" options={{ headerShown: false, swipeEnabled: false, }} />
+          <Drawer.Screen name="(tabs)" options={{ 
+            headerShown: false,
+            // swipeEnabled: false,
+          }} />
 
           <Drawer.Screen 
           name="sponsor" 
           options={{
             drawerLabel: "打米",
-            swipeEnabled: true,
+            swipeEnabled: false,
           }}
         />
         </Drawer>

@@ -62,7 +62,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
         >
           <Avatar.Image
             source={
-              avatarUri ? { uri: avatarUri } : require("../assets/avatar.jpg")
+              avatarUri ? { uri: avatarUri } : require("../assets/images/avatar.jpg")
             }
             style={styles.avatar}
           />

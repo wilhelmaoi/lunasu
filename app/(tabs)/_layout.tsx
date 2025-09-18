@@ -36,7 +36,7 @@ export default function TabLayout() {
       <Tabs.Screen name="fortune" options={{ 
         title: "运势", 
         tabBarIcon: ({ color }) => <MaterialCommunityIcons name="crystal-ball" size={28} color={color} />, 
-        headerShown: false 
+        headerShown: false
       }} />
       <Tabs.Screen name="stellar" options={{ 
         title: "星座" ,

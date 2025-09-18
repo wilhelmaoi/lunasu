@@ -4,6 +4,7 @@ import { Surface, Text } from "react-native-paper";
 
 
 export default function hall() {
+
   return (
     <Surface style={styles.container}>
       <Text>Tab [Home|Settings]</Text>
