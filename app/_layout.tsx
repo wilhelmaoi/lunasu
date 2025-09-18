@@ -1,6 +1,7 @@
 // app/_layout.tsx
 import CustomDrawerContent from "@/src/components/CustomDrawerContent";
 import { useThemeStore } from "@/src/context/store";
+import { I18nProvider, useI18n } from "@/src/i18n/I18nProvider";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
@@ -18,20 +19,22 @@ export default function RootLayout() {
   const mode = useThemeStore((state) => state.mode);
 
   const pathname = usePathname();
-  // 从路径中提取当前标签名
   useEffect(() => {
     console.log("当前路径：", pathname);
   }, [pathname]);
 
-  
+  // 仅在运势与星座页允许手势打开抽屉
+  const canSwipeDrawer = pathname?.includes('/fortune') || pathname?.includes('/stellar');
+
   return (
     <ThemeProvider>
-      <SafeAreaView style={{ flex: 1,backgroundColor:theme.colors.background  }} edges={['bottom']}>
-      <StatusBar
-        style={mode === "dark" ? "light" : "dark"}
-        translucent={true}
-      />
-        <GestureHandlerRootView style={{ flex: 1 }}>
+      <I18nProvider>
+        <SafeAreaView style={{ flex: 1,backgroundColor:theme.colors.background  }} edges={['bottom']}>
+          <StatusBar
+            style={mode === "dark" ? "light" : "dark"}
+            translucent={true}
+          />
+          <GestureHandlerRootView style={{ flex: 1 }}>
             <Drawer
               drawerContent={(props) => <CustomDrawerContent {...props} />}
               screenOptions={{
@@ -42,29 +45,35 @@ export default function RootLayout() {
                 },
                 drawerType: "front",
                 overlayColor: 'rgba(0,0,0,0.5)',
-                swipeEnabled: true,
+                swipeEnabled: canSwipeDrawer,
                 swipeEdgeWidth: 30,
                 drawerPosition: "left",
                 drawerStatusBarAnimation: "slide",
               }}
             >
-          <Drawer.Screen name="index" options={{ headerShown: false }} />
-          <Drawer.Screen name="onboarding" options={{ headerShown: false, swipeEnabled: false, }} />
-          <Drawer.Screen name="(tabs)" options={{ 
-            headerShown: false,
-            // swipeEnabled: false,
-          }} />
-
-          <Drawer.Screen 
-          name="sponsor" 
-          options={{
-            drawerLabel: "打米",
-            swipeEnabled: false,
-          }}
-        />
-        </Drawer>
-      </GestureHandlerRootView>
-      </SafeAreaView>
+              <Drawer.Screen name="index" options={{ headerShown: false }} />
+              <Drawer.Screen name="onboarding" options={{ headerShown: false, swipeEnabled: false, }} />
+              <Drawer.Screen name="(tabs)" options={{ 
+                headerShown: false,
+              }} />
+              <SponsorScreen />
+            </Drawer>
+          </GestureHandlerRootView>
+        </SafeAreaView>
+      </I18nProvider>
     </ThemeProvider>
+  );
+}
+
+function SponsorScreen() {
+  const { t } = useI18n();
+  return (
+    <Drawer.Screen 
+      name="sponsor" 
+      options={{
+        drawerLabel: t('drawer.sponsor'),
+        swipeEnabled: false,
+      }}
+    />
   );
 }

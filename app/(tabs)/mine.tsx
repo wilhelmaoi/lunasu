@@ -1,19 +1,23 @@
 // app/(tabs)/mine.tsx
+import LanguageSwitcher from "@/src/components/LanguageSwitcher";
+import { useI18n } from "@/src/i18n/I18nProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Pressable, StyleSheet, } from 'react-native';
 import { Surface, Text } from "react-native-paper";
 export default function mine() {
+  const { t } = useI18n();
   return (
     <Surface style={styles.container}>
-      <Text variant="titleLarge">主页面</Text>
-      <Text style={styles.text}>这是完成引导后的主界面。</Text>
+      <Text variant="titleLarge">{t('mine.title')}</Text>
+      <Text style={styles.text}>{t('mine.desc')}</Text>
+      <LanguageSwitcher />
       <Pressable
         onPress={async () => {
           await AsyncStorage.removeItem("onboardingComplete");
-          alert("已清除引导完成标记，下次将再次显示引导页");
+          alert(t('mine.resetAlert'));
         }}
       >
-        <Text style={styles.link}>重置引导</Text>
+        <Text style={styles.link}>{t('mine.resetOnboarding')}</Text>
       </Pressable>
     </Surface>
   );
