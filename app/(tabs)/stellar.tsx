@@ -2,7 +2,7 @@
 import { StyleSheet } from 'react-native';
 import { Surface, Text } from "react-native-paper";
 
-export default function stellar() {
+export default function Stellar() {
   return (
     <Surface style={styles.container}>
       <Text>Tab [Home|Settings]</Text>

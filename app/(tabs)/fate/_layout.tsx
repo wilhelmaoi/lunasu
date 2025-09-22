@@ -4,7 +4,7 @@ import { useTheme } from "@/src/theme/ThemeContext";
 import { Tabs } from "expo-router";
 import React from "react";
 
-export default function FortuneLayout() {
+export default function FateLayout() {
   const theme = useTheme();
 
   return (

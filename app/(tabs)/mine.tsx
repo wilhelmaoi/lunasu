@@ -4,7 +4,8 @@ import { useI18n } from "@/src/i18n/I18nProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Pressable, StyleSheet, } from 'react-native';
 import { Surface, Text } from "react-native-paper";
-export default function mine() {
+
+export default function Mine() {
   const { t } = useI18n();
   return (
     <Surface style={styles.container}>

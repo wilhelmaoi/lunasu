@@ -1,10 +1,10 @@
 import { AntDesign } from "@expo/vector-icons";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Href, useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Platform, ScrollView, StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Avatar, Card, IconButton, Text } from "react-native-paper";
 import { useAuthStore, useThemeStore } from "../context/store";
 import { useTheme } from "../theme/ThemeContext";
@@ -23,30 +23,53 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
   // 导航到指定路径并关闭侧边栏
   const navigateToPath = (path: string) => {
+    // navigation.dispatch(DrawerActions.closeDrawer());
     router.push(path as  Href);
-    navigation.dispatch(DrawerActions.closeDrawer());
+
+
+    // try {
+    //   router.push(path as Href);
+      
+    //   // 只有在导航到 tabs 页面时才关闭抽屉
+    //   if (path.includes("/(tabs)/")) {
+    //     setTimeout(() => {
+    //       try {
+    //         navigation.dispatch(DrawerActions.closeDrawer());
+    //       } catch {
+    //         // 静默处理错误，不输出日志
+    //       }
+    //     }, 100);
+    //   }
+    // } catch (error) {
+    //   console.error("导航错误:", error);
+    // }
   };
 
   // 处理扫描二维码
   const handleScanQRCode = () => {
-    router.push("./(screen)/scan-qr-code");
-    navigation.dispatch(DrawerActions.closeDrawer());
+    // router.push("./(screen)/scan-qr-code");
+    // navigation.dispatch(DrawerActions.closeDrawer());
   };
+  const STATUSBAR_HEIGHT =
+  Platform.OS === "ios" ? 44 : StatusBar.currentHeight || 24;
 
   return (
-    <ScrollView {...props} style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <ScrollView {...props} style={[styles.container, 
+      { backgroundColor: theme.colors.background,
+      paddingTop: STATUSBAR_HEIGHT + 0, // 状态栏高度 + 额外边距
+    }, ]}>
        {/* 右上角按钮区域 */}
        <View style={styles.headerButtons}>
           <IconButton
             icon="qrcode-scan"
             iconColor={theme.colors.primary}
-            size={24}
+            size={22}
             onPress={handleScanQRCode}
           />
           <IconButton
             icon={mode === 'light' ? 'weather-night' : 'white-balance-sunny'}
             iconColor={theme.colors.primary}
-            size={24}
+            size={22}
             onPress={toggleTheme}
           />
         </View>
@@ -58,7 +81,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
        
         <TouchableOpacity
           style={styles.userInfo}
-          onPress={() => navigateToPath("./(tabs)/mine")}
+          onPress={() => navigateToPath("/(tabs)/mine")}
         >
           <Avatar.Image
             source={
@@ -81,7 +104,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
       {/* 左侧大图标和文字 */}
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() => navigateToPath("./sponsor")}
+        onPress={() => navigateToPath("/(screen)/sponsor")}
       >
         <View
           style={{
@@ -160,9 +183,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
       <View style={styles.menuSection}>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToPath("./(tabs)/home")}
+          onPress={() => navigateToPath("/(tabs)/fortune")}
         >
-          <AntDesign name="home" size={24} color={theme.colors.primary} />
+          <AntDesign name="home" size={22} color={theme.colors.primary} />
           <Text style={[styles.menuText, { color: theme.colors.primary }]}>
             首页
           </Text>
@@ -170,9 +193,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToPath("./(screen)/my-collects")}
+          onPress={() => navigateToPath("/(tabs)/mine")}
         >
-          <AntDesign name="star" size={24} color={theme.colors.primary} />
+          <AntDesign name="star" size={22} color={theme.colors.primary} />
           <Text style={[styles.menuText, { color: theme.colors.primary }]}>
             我的收藏
           </Text>
@@ -180,9 +203,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToPath("./settings")}
+          onPress={() => navigateToPath("/settings")}
         >
-          <AntDesign name="setting" size={24} color={theme.colors.primary} />
+          <AntDesign name="setting" size={22} color={theme.colors.primary} />
           <Text style={[styles.menuText, { color: theme.colors.primary }]}>
             设置
           </Text>
@@ -198,7 +221,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
       >
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigateToPath("./sign-in")}
+          onPress={() => navigateToPath("/sign-in")}
         >
           <AntDesign name="logout" size={24} color={theme.colors.primary} />
           <Text style={[styles.menuText, { color: theme.colors.primary }]}>
@@ -218,7 +241,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 16,
-    paddingTop: 16,
+    // paddingTop: 16,
   },
   userSection: {
     margin: 16,

@@ -1,12 +1,10 @@
 // app/(tabs)/Fortune.tsx
 
-import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { Surface, Text } from "react-native-paper";
 
 
-export default function fortune() {
-  const navigation = useNavigation();
+export default function Fortune() {
 
   // useFocusEffect(
   //   useCallback(() => {

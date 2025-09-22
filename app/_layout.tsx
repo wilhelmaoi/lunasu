@@ -1,7 +1,7 @@
 // app/_layout.tsx
 import CustomDrawerContent from "@/src/components/CustomDrawerContent";
 import { useThemeStore } from "@/src/context/store";
-import { I18nProvider, useI18n } from "@/src/i18n/I18nProvider";
+import { I18nProvider } from "@/src/i18n/I18nProvider";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import { usePathname } from "expo-router";
 import { Drawer } from "expo-router/drawer";
@@ -56,24 +56,13 @@ export default function RootLayout() {
               <Drawer.Screen name="(tabs)" options={{ 
                 headerShown: false,
               }} />
-              <SponsorScreen />
+              <Drawer.Screen name="(screen)" options={{ 
+                headerShown: false,
+              }} />
             </Drawer>
           </GestureHandlerRootView>
         </SafeAreaView>
       </I18nProvider>
     </ThemeProvider>
-  );
-}
-
-function SponsorScreen() {
-  const { t } = useI18n();
-  return (
-    <Drawer.Screen 
-      name="sponsor" 
-      options={{
-        drawerLabel: t('drawer.sponsor'),
-        swipeEnabled: false,
-      }}
-    />
   );
 }

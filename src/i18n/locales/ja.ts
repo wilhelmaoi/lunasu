@@ -6,7 +6,7 @@ export default {
     reset: 'リセット',
   },
   tabs: {
-    fortune: '運勢',
+    fate: '運勢',
     stellar: '星座',
     divination: '占い',
     mine: 'マイ',

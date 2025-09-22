@@ -6,7 +6,7 @@ export default {
     reset: 'Reset',
   },
   tabs: {
-    fortune: 'Fortune',
+    fate: 'Fate',
     stellar: 'Zodiac',
     divination: 'Divination',
     mine: 'Me',

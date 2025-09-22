@@ -1,3 +1,4 @@
+import { useTheme } from "@/src/theme/ThemeContext";
 import { Directory, File, Paths } from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import React, { useState } from "react";
@@ -10,7 +11,6 @@ import {
   View,
 } from "react-native";
 import { Card, Text } from "react-native-paper";
-import { useTheme } from "../src/theme/ThemeContext";
 
 const sponsorTiers = [
   { price: 2.88, label: "小额支持", desc: "请作者喝一杯柠檬水" },

@@ -6,7 +6,7 @@ export default {
     reset: '重置',
   },
   tabs: {
-    fortune: '运势',
+    fate: '运势',
     stellar: '星座',
     divination: '占卜',
     mine: '我的',

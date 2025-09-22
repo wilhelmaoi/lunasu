@@ -4,13 +4,14 @@ import { useTheme } from '@/src/theme/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from "expo-router";
 import React from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 
 export default function TabLayout() {
-
   const theme = useTheme(); // 🔥 获取主题颜色
   const { t } = useI18n();
+  const insets = useSafeAreaInsets();
   
   return( 
     <Tabs
@@ -20,10 +21,9 @@ export default function TabLayout() {
         tabBarInactiveTintColor: theme.colors.secondary, // 未选中颜色
         tabBarLabelStyle: { fontSize: 12 },
         tabBarStyle: { 
-          height: 60,
+          height: 60, // 动态高度，包含底部安全区域
           backgroundColor: theme.colors.background, // ✅ 动态背景色
           borderTopColor: theme.colors.outlineVariant, // 分隔线颜色
-          borderTopWidth: 0, // 可选，去掉上边框
           elevation: 0,      // 安卓去阴影
          },
         tabBarPosition: "bottom",
@@ -35,8 +35,8 @@ export default function TabLayout() {
 
         水晶球：<MaterialCommunityIcons name="crystal-ball" size={28} color={color} />
       */}
-      <Tabs.Screen name="fortune" options={{ 
-        title: t('tabs.fortune'), 
+      <Tabs.Screen name="fate" options={{ 
+        title: t('tabs.fate'), 
         tabBarIcon: ({ color }) => <MaterialCommunityIcons name="crystal-ball" size={28} color={color} />, 
         headerShown: false
       }} />
