@@ -1,6 +1,6 @@
 export default {
   common: {
-    appName: '露娜宿',
+    appName: '星宿',
     confirm: '确定',
     cancel: '取消',
     reset: '重置',

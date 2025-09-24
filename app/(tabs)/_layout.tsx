@@ -53,6 +53,10 @@ export default function TabLayout() {
         title: t('tabs.mine') ,tabBarIcon: ({ color }) => <MaterialCommunityIcons name="star-four-points" size={28}  color={color}  />, 
         headerShown: false
         }} />
+      <Tabs.Screen name="(test)" options={{ 
+        title: '测试' ,tabBarIcon: ({ color }) => <MaterialCommunityIcons name="orbit" size={28}  color={color}  />, 
+        headerShown: false
+        }} />
     </Tabs>
   )
 }
