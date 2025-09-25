@@ -1,5 +1,6 @@
 export default () => {
   const googleServicesFile = process.env.GOOGLE_SERVICES_JSON ?? "./credentials/google-services.json";
+  const keystoreFile = process.env.KEYSTORE_FILE ?? "./credentials/@wilhelmaoi__lunasu.jks";
 
   return {
     expo: {
@@ -17,6 +18,12 @@ export default () => {
       android: {
         package: "com.wilhelmaoi.lunasu",
         googleServicesFile,
+        keystore: {
+          keystoreFile,
+          keystorePassword: process.env.KEYSTORE_PASSWORD ?? "your_keystore_password",
+          keyAlias: process.env.KEY_ALIAS ?? "your_key_alias",
+          keyPassword: process.env.KEY_PASSWORD ?? "your_key_password",
+        },
         adaptiveIcon: {
           backgroundColor: "#E6F4FE",
           foregroundImage: "./src/assets/images/android-icon-foreground.png",
