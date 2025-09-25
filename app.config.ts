@@ -15,7 +15,7 @@ export default () => {
         supportsTablet: true,
       },
       android: {
-        package: "com.wilhelman.lunasu",
+        package: "com.wilhelmaoi.lunasu",
         googleServicesFile,
         adaptiveIcon: {
           backgroundColor: "#E6F4FE",

@@ -12,7 +12,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.wilhelman.lunasu",
+      "package": "com.wilhelmaoi.lunasu",
       "googleServicesFile": "./credentials/google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
