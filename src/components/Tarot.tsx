@@ -1,145 +1,227 @@
 import React, { useState } from "react";
-import { Dimensions, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle
+} from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 import Animated, {
-    Extrapolate,
-    interpolate,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
-const CARD_WIDTH = 120;
-const CARD_HEIGHT = 180;
+const RegularContent = () => {
+  return (
+    <View style={regularContentStyles.card}>
+      <Text style={regularContentStyles.text}>塔罗牌的正面 ✨</Text>
+    </View>
+  );
+};
 
-function TarotCard({ id }: { id: number }) {
-  const rotate = useSharedValue(0);
-  const [flipped, setFlipped] = useState(false);
+const regularContentStyles = StyleSheet.create({
+  card: {
+    flex: 1,
+    backgroundColor: "#b6cff7",
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    color: "#001a72",
+  },
+});
 
-  const flipCard = () => {
-    const next = flipped ? 0 : 180;
-    rotate.value = withTiming(next, { duration: 600 });
-    setFlipped(!flipped);
+const FlippedContent = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const enlargeCard = () => {
+    setModalVisible(true);
   };
 
-  const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
-      let newValue = Math.min(Math.max(0, rotate.value + e.translationX / 2), 180);
-      rotate.value = newValue;
-    })
-    .onEnd(() => {
-      if (rotate.value > 90) {
-        rotate.value = withTiming(180, { duration: 300 });
-        runOnJS(setFlipped)(true);
-      } else {
-        rotate.value = withTiming(0, { duration: 300 });
-        runOnJS(setFlipped)(false);
-      }
-    });
+  // return (
+  //   <View>
+  //     <Pressable onPress={enlargeCard}>
+        <View style={flippedContentStyles.card}>
+          <Text style={flippedContentStyles.text}>塔罗牌的反面 🚀</Text>
+        </View>
+      // </Pressable>
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotateY: `${rotate.value}deg` }],
-  }));
+      {/* <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={flippedContentStyles.modalOverlay}>
+          <View style={flippedContentStyles.modalContent}>
 
-  const backStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(rotate.value, [0, 90], [1, 0], Extrapolate.CLAMP),
-  }));
+            <TouchableOpacity
+              style={flippedContentStyles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={flippedContentStyles.closeText}>关闭</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal> */}
+    // </View>
+  // );
+};
 
-  const frontStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(rotate.value, [90, 180], [0, 1], Extrapolate.CLAMP),
-  }));
+const flippedContentStyles = StyleSheet.create({
+  card: {
+    flex: 1,
+    backgroundColor: "#baeee5",
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    color: "#001a72",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 16,
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: 400,
+    borderRadius: 8,
+  },
+  closeButton: {
+    marginTop: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: "#b58df1",
+    borderRadius: 8,
+  },
+  closeText: {
+    color: "#fff",
+  },
+});
+
+const FlipCard = ({
+  isFlipped,
+  cardStyle,
+  direction = "y",
+  duration = 500,
+  RegularContent,
+  FlippedContent,
+}) => {
+  const isDirectionX = direction === "x";
+
+  const regularCardAnimatedStyle = useAnimatedStyle(() => {
+    const spinValue = interpolate(Number(isFlipped.value), [0, 1], [0, 180]);
+    const rotateValue = withTiming(`${spinValue}deg`, { duration });
+
+    return {
+      transform: [
+        isDirectionX ? { rotateX: rotateValue } : { rotateY: rotateValue },
+      ],
+    } as ViewStyle;
+  });
+
+  const flippedCardAnimatedStyle = useAnimatedStyle(() => {
+    const spinValue = interpolate(Number(isFlipped.value), [0, 1], [180, 360]);
+    const rotateValue = withTiming(spinValue + "deg", { duration });
+
+    return {
+      transform: [
+        isDirectionX ? { rotateX: rotateValue } : { rotateY: rotateValue },
+      ],
+    } as ViewStyle;
+  });
 
   return (
-    <GestureDetector gesture={panGesture}>
-      <TouchableWithoutFeedback onPress={flipCard}>
-        <Animated.View style={[styles.card, animatedStyle]}>
-          {/* 背面 */}
-          <Animated.View
-            style={[
-              StyleSheet.absoluteFillObject,
-              styles.cardFace,
-              styles.back,
-              backStyle,
-            ]}
-          >
-            <Text style={styles.text}>🔮</Text>
-          </Animated.View>
-
-          {/* 正面 */}
-          <Animated.View
-            style={[
-              StyleSheet.absoluteFillObject,
-              styles.cardFace,
-              styles.front,
-              frontStyle,
-            ]}
-          >
-            <Text style={styles.text}>🌟 {id}</Text>
-          </Animated.View>
-        </Animated.View>
-      </TouchableWithoutFeedback>
-    </GestureDetector>
-  );
-}
-
-export default function TarotScene() {
-  const data = Array.from({ length: 6 }, (_, i) => i + 1);
-
-  return (
-    <View style={styles.container}>
-      {/* 神秘背景：Lottie 星光 */}
-      {/* <LottieView
-        source={require("../assets/animation/stars.json")} // 你需要准备一个星空/粒子 Lottie 动画文件
-        autoPlay
-        loop
-        style={StyleSheet.absoluteFillObject}
-      /> */}
-
-      {/* 多张牌 */}
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.toString()}
-        numColumns={3}
-        columnWrapperStyle={{ justifyContent: "space-around", marginBottom: 20 }}
-        contentContainerStyle={{ paddingVertical: 50 }}
-        renderItem={({ item }) => <TarotCard id={item} />}
-      />
+    <View>
+      <Animated.View
+        style={[
+          flipCardStyles.regularCard,
+          cardStyle,
+          regularCardAnimatedStyle,
+        ]}
+      >
+        {RegularContent}
+      </Animated.View>
+      <Animated.View
+        style={[
+          flipCardStyles.flippedCard,
+          cardStyle,
+          flippedCardAnimatedStyle,
+        ]}
+      >
+        {FlippedContent}
+      </Animated.View>
     </View>
+  );
+};
+
+const flipCardStyles = StyleSheet.create({
+  regularCard: {
+    position: "absolute",
+    zIndex: 1,
+  },
+  flippedCard: {
+    zIndex: 2,
+  },
+});
+
+export default function Tarot() {
+  const isFlipped = useSharedValue(false);
+
+  const handlePress = () => {
+    isFlipped.value = !isFlipped.value;
+
+  };
+
+  return (
+    <Pressable onPress={handlePress}>
+      <FlipCard
+        isFlipped={isFlipped}
+        cardStyle={styles.flipCard}
+        FlippedContent={<FlippedContent />}
+        RegularContent={<RegularContent />}
+      />
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#111",
+    height: 300,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonContainer: {
+    marginTop: 16,
     justifyContent: "center",
     alignItems: "center",
   },
-  card: {
-    width: CARD_WIDTH,
-    height: CARD_HEIGHT,
-    backgroundColor: "transparent",
-    transform: [{ perspective: 1000 }], // 3D 透视效果
+  toggleButton: {
+    backgroundColor: "#b58df1",
+    padding: 12,
+    borderRadius: 48,
   },
-  
-  cardFace: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backfaceVisibility: "hidden",
-    borderRadius: 12,
-  },
-  back: {
-    backgroundColor: "#333",
-  },
-  front: {
-    backgroundColor: "#c49bff",
-    transform: [{ rotateY: "180deg" }],
-  },
-  text: {
-    fontSize: 20,
+  toggleButtonText: {
     color: "#fff",
+    textAlign: "center",
+  },
+  flipCard: {
+    width: 170,
+    height: 200,
+    backfaceVisibility: "hidden",
   },
 });

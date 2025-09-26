@@ -1077,7 +1077,7 @@
     "@babel/code-frame" "~7.10.4"
     json5 "^2.2.3"
 
-"@expo/metro-config@54.0.3", "@expo/metro-config@^54.0.3", "@expo/metro-config@~54.0.3":
+"@expo/metro-config@54.0.3", "@expo/metro-config@~54.0.3":
   version "54.0.3"
   resolved "https://registry.npmjs.org/@expo/metro-config/-/metro-config-54.0.3.tgz"
   integrity sha512-TQ5MKSGFB6zJxi+Yr8VYXQFHzRXgvSJzNsHX1otTqnxjXbptwYiXhljAqGSjr3pByq4+sHX/GifMk6fGgAANmA==
