@@ -2,8 +2,9 @@
 import LanguageSwitcher from "@/src/components/LanguageSwitcher";
 import { useI18n } from "@/src/i18n/I18nProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from "expo-router";
 import { Pressable, StyleSheet, } from 'react-native';
-import { Surface, Text } from "react-native-paper";
+import { Button, Surface, Text } from "react-native-paper";
 
 export default function Mine() {
   const { t } = useI18n();
@@ -20,6 +21,7 @@ export default function Mine() {
       >
         <Text style={styles.link}>{t('mine.resetOnboarding')}</Text>
       </Pressable>
+      <Button mode='outlined' onPress={() => router.navigate('/(test)/notification')}>通知服务测试</Button>
     </Surface>
   );
 }

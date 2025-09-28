@@ -5,7 +5,7 @@ import {
   View,
   ViewStyle
 } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
+import { Directions, Gesture, GestureDetector, Pressable } from "react-native-gesture-handler";
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -41,7 +41,7 @@ const FlippedContent = () => {
     setModalVisible(true);
   };
 
-  // return (
+  return (
   //   <View>
   //     <Pressable onPress={enlargeCard}>
         <View style={flippedContentStyles.card}>
@@ -49,7 +49,7 @@ const FlippedContent = () => {
         </View>
       // </Pressable>
 
-      {/* <Modal
+      /* <Modal
         visible={modalVisible}
         transparent={true}
         animationType="fade"
@@ -66,9 +66,9 @@ const FlippedContent = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal> */}
+      </Modal> */
     // </View>
-  // );
+  );
 };
 
 const flippedContentStyles = StyleSheet.create({
@@ -135,7 +135,7 @@ const FlipCard = ({
 
   const flippedCardAnimatedStyle = useAnimatedStyle(() => {
     const spinValue = interpolate(Number(isFlipped.value), [0, 1], [180, 360]);
-    const rotateValue = withTiming(spinValue + "deg", { duration });
+    const rotateValue = withTiming(`${spinValue}deg`, { duration });
 
     return {
       transform: [
@@ -185,8 +185,15 @@ export default function Tarot() {
     isFlipped.value = !isFlipped.value;
 
   };
+   // 手势：向左轻扫翻转
+   const fling = Gesture.Fling()
+   .direction(Directions.RIGHT | Directions.LEFT)
+   .onEnd(() => {
+     isFlipped.value = !isFlipped.value;
+   });
 
   return (
+    <GestureDetector gesture={fling}>
     <Pressable onPress={handlePress}>
       <FlipCard
         isFlipped={isFlipped}
@@ -195,6 +202,7 @@ export default function Tarot() {
         RegularContent={<RegularContent />}
       />
     </Pressable>
+   </GestureDetector>
   );
 }
 
