@@ -83,7 +83,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export const useTheme = (paramMode?: ThemeMode) => {
   // 自动优先用传参，没有再用store的
-  const mode = paramMode ?? useThemeStore((state) => state.mode);
+  const storeMode = useThemeStore((state) => state.mode);
+  const mode = paramMode ?? storeMode;
   return mode === "dark" ? darkTheme : lightTheme;
 };
 // ----------- 建议在app入口这么用 -----------

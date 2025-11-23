@@ -19,6 +19,19 @@ export default {
   },
   drawer: {
     sponsor: '打米',
+  },
+  divination: {
+    title: '塔罗占卜',
+    subtitle: '选择一个你想了解的问题',
+    questions: {
+      today: '了解你今天的运势',
+      love: '了解你最近的爱情运势',
+      career: '了解你的事业发展',
+      health: '了解你的健康状况',
+      finance: '了解你的财运',
+      relationship: '了解你的人际关系',
+    },
+    close: '关闭',
   }
 } as const;
 

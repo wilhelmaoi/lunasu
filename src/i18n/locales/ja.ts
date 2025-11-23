@@ -19,6 +19,19 @@ export default {
   },
   drawer: {
     sponsor: 'スポンサー',
+  },
+  divination: {
+    title: 'タロット占い',
+    subtitle: '知りたい質問を選んでください',
+    questions: {
+      today: '今日の運勢を知る',
+      love: '最近の恋愛運を知る',
+      career: 'キャリアの発展を知る',
+      health: '健康状態を知る',
+      finance: '金運を知る',
+      relationship: '人間関係を知る',
+    },
+    close: '閉じる',
   }
 } as const;
 

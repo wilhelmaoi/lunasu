@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { Dimensions, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Dimensions, Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
-    Extrapolate,
-    interpolate,
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  Extrapolate,
+  interpolate,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
+import { TarotCardData, cardBackImage, getRandomCards } from "./tarotCards";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = 120;
 const CARD_HEIGHT = 180;
 
-function TarotCard({ id }: { id: number }) {
+interface TarotCardProps {
+  card: TarotCardData;
+}
+
+function TarotCard({ card }: TarotCardProps) {
   const rotate = useSharedValue(0);
   const [flipped, setFlipped] = useState(false);
 
@@ -43,9 +48,14 @@ function TarotCard({ id }: { id: number }) {
     transform: [{ rotateY: `${rotate.value}deg` }],
   }));
 
-  const backStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(rotate.value, [0, 90], [1, 0], Extrapolate.CLAMP),
-  }));
+  const backStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(rotate.value, [0, 90], [1, 0], Extrapolate.CLAMP);
+    const scale = interpolate(rotate.value, [0, 90], [1, 0.8], Extrapolate.CLAMP);
+    return {
+      opacity,
+      transform: [{ scale }],
+    };
+  });
 
   const frontStyle = useAnimatedStyle(() => ({
     opacity: interpolate(rotate.value, [90, 180], [0, 1], Extrapolate.CLAMP),
@@ -58,25 +68,37 @@ function TarotCard({ id }: { id: number }) {
           {/* 背面 */}
           <Animated.View
             style={[
-              StyleSheet.absoluteFillObject,
               styles.cardFace,
               styles.back,
               backStyle,
             ]}
           >
-            <Text style={styles.text}>🔮</Text>
+            <Image 
+              source={cardBackImage} 
+              style={styles.cardImage}
+              resizeMode="cover"
+            />
           </Animated.View>
 
           {/* 正面 */}
           <Animated.View
             style={[
-              StyleSheet.absoluteFillObject,
               styles.cardFace,
               styles.front,
               frontStyle,
             ]}
           >
-            <Text style={styles.text}>🌟 {id}</Text>
+            <Image 
+              source={card.imagePath} 
+              style={styles.cardImage}
+              resizeMode="cover"
+              onError={(error) => {
+                console.error('图片加载失败:', card.name, card.imagePath, error);
+              }}
+              onLoad={() => {
+                console.log('图片加载成功:', card.name);
+              }}
+            />
           </Animated.View>
         </Animated.View>
       </TouchableWithoutFeedback>
@@ -85,7 +107,8 @@ function TarotCard({ id }: { id: number }) {
 }
 
 export default function TarotScene() {
-  const data = Array.from({ length: 6 }, (_, i) => i + 1);
+  // 随机选择3张卡牌
+  const selectedCards = useMemo(() => getRandomCards(3), []);
 
   return (
     <View style={styles.container}>
@@ -97,15 +120,12 @@ export default function TarotScene() {
         style={StyleSheet.absoluteFillObject}
       /> */}
 
-      {/* 多张牌 */}
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.toString()}
-        numColumns={3}
-        columnWrapperStyle={{ justifyContent: "space-around", marginBottom: 20 }}
-        contentContainerStyle={{ paddingVertical: 50 }}
-        renderItem={({ item }) => <TarotCard id={item} />}
-      />
+      {/* 三张随机塔罗牌 */}
+      <View style={styles.cardsContainer}>
+        {selectedCards.map((card) => (
+          <TarotCard key={card.id} card={card} />
+        ))}
+      </View>
     </View>
   );
 }
@@ -113,9 +133,15 @@ export default function TarotScene() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#111",
     justifyContent: "center",
     alignItems: "center",
+  },
+  cardsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 20,
   },
   card: {
     width: CARD_WIDTH,
@@ -123,23 +149,25 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     transform: [{ perspective: 1000 }], // 3D 透视效果
   },
-  
   cardFace: {
-    flex: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     justifyContent: "center",
     alignItems: "center",
-    backfaceVisibility: "hidden",
     borderRadius: 12,
+    overflow: "hidden",
   },
   back: {
     backgroundColor: "#333",
   },
   front: {
     backgroundColor: "#c49bff",
-    transform: [{ rotateY: "180deg" }],
   },
-  text: {
-    fontSize: 20,
-    color: "#fff",
+  cardImage: {
+    width: "100%",
+    height: "100%",
   },
 });
