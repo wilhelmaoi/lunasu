@@ -57,9 +57,11 @@ function TarotCard({ card }: TarotCardProps) {
     };
   });
 
-  const frontStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(rotate.value, [90, 180], [0, 1], Extrapolate.CLAMP),
-  }));
+  const frontStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(rotate.value, [90, 180], [0, 1], Extrapolate.CLAMP),
+    };
+  });
 
   return (
     <GestureDetector gesture={panGesture}>
